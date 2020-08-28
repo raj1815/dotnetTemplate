@@ -6,10 +6,24 @@ pipeline {
         disableConcurrentBuilds()
     }
     
+      environment {
+        Nuget_Proxy = "https://api.nuget.org/v3/index.json"
+        SonarQube_Project_Key = "Lending.Repayment.Strategy.System.API"
+        SonarQube_Project_Name = "Lending.Repayment.Strategy.System.API"
+        SonarQube_Project_Exclusions = "**/*.json"
+        SonarQube_Version = "1.0.0"
+        Test_Project = ""
+        Test_Output = ""
+        Project_Solution = "WebApplication4.sln"
+        Project_Folder = "WebApplication4"
+        Publish_Path = "WebApplication4/out"
+        UCD_Component_Name = "Lending.Repayment.Strategy.System.API"
+    }
+    
     stages {        
         stage('DotNet Build') {
             steps {                
-                dotnet restore -s {https://api.nuget.org/v3/index.json}
+                dotnet restore -s ${Nuget_Proxy}
                 dotnet build             
             }
         }
