@@ -17,9 +17,7 @@ def getVersion = {
 }
 
 pipeline {
-    agent {
-        label 'dotnetcore310'
-    }   
+    agent any 
     
     options {
         disableConcurrentBuilds()
