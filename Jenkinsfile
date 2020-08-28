@@ -23,7 +23,6 @@ pipeline {
     stages {        
         stage('DotNet Build') {
             steps {                
-                dotnet restore -s ${Nuget_Proxy}
                 dotnet build             
             }
         }
