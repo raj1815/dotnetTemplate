@@ -21,7 +21,7 @@ pipeline {
     }
     
     stages {        
-        stage('DotNet Build') {
+        stage('nudget restore') {
             steps {    
                 bat "dotnet restore -s ${Nuget_Proxy}"
                 bat "dotnet build"  
@@ -34,5 +34,10 @@ pipeline {
             }
         }
     
+          stage('code build') {
+            steps {    
+                bat "dotnet build"  
+            }
+        }
     }
 }
