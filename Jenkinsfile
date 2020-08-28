@@ -21,8 +21,6 @@ pipeline {
     
     options {
         disableConcurrentBuilds()
-        // Discard old build logs
-        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
     }
     
     environment {
@@ -39,28 +37,7 @@ pipeline {
         UCD_Component_Name = "Lending.Repayment.Strategy.System.API"
     }
     
-    stages {
-        stage("SonarQube Initialise") {
-            steps {
-                script {
-                    withSonarQubeEnv('SonarQube') {
-                        // Initialise the MS Build step with the SonarQube hooks to collect information for upload and analysis later. 
-                        // Replace /k:<key> with registered key from https://sonarqube.nednet.co.za
-                        sh "dotnet ${sqScannerMsBuildHome}/SonarScanner.MSBuild.dll begin /k:'${env.SonarQube_Project_Key}' \
-                            /d:sonar.host.url='${SONAR_HOST_URL}' \
-                            /d:sonar.login='${SONAR_AUTH_TOKEN}' \
-                            /v:'${env.SonarQube_Version}' \
-                            /d:sonar.branch.name='${BRANCH_NAME}' \
-                            /d:sonar.buildbreaker.skip=\"true\" \
-                            /d:sonar.exclusions='${env.SonarQube_Project_Exclusions}'"
-
-                            //d:sonar.cs.opencover.reportsPaths='${WORKSPACE}/${env.Test_Output}/coverage.xml' \
-                            //d:sonar.cs.vstest.reportsPaths='${WORKSPACE}/${env.Test_Output}/TestResults.trx'"
-                    }  
-                }
-            }
-        }
-        
+    stages {        
         stage('DotNet Build') {
             steps {                
                 sh "dotnet restore -s ${Nuget_Proxy}"
@@ -103,36 +80,5 @@ pipeline {
             }
         }
 
-        stage ('UCD Publish') {
-            when {
-                anyOf {
-                    branch "master"
-                    branch "feature/*"
-                }
-            }
-            steps {
-                script {
-                    sh "echo starting - ${env.WORKSPACE}"
-                    env.BRANCH_WORKSPACE = env.WORKSPACE
-
-                    step([$class: 'UCDeployPublisher',
-                    siteName: 'UCD PROD',
-                    component: [
-                        $class: 'com.urbancode.jenkins.plugins.ucdeploy.VersionHelper$VersionBlock',
-                        componentName: "${env.UCD_Component_Name}",
-                        delivery: [
-                            $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeliveryHelper$Push',
-                            pushVersion: "${BRANCH_NAME}-${BUILD_NUMBER}",
-                            baseDir: "${env.BRANCH_WORKSPACE}/${env.Publish_Path}",
-                            fileIncludePatterns: '**/*',
-                            fileExcludePatterns: '',
-                            pushProperties: 'jenkins.server=Local\njenkins.reviewed=false',
-                            pushDescription: 'Pushed from Jenkins'
-                        ]
-                        ]
-                    ])
-                }
-            }
-		}
     }
 }
