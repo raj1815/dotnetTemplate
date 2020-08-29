@@ -1,5 +1,4 @@
-"Dot.net Sample code"
-def sqScannerMsBuildHome = "/home/jenkins/sonar-scanner-msbuild-4.8.0.12008"
+def sqScannerMsBuildHome = tool 'Scanner for MSBuild 4.6'
 pipeline {
     agent any 
     
@@ -23,10 +22,12 @@ pipeline {
         
         stage("SonarQube Initialise") {
             steps {
-                    withSonarQubeEnv() {
-                 bat "dotnet sonarscanner begin /k:${SonarQube_Project_Key}"     
-                    
-                    }
+                script{
+                    withSonarQubeEnv('My SonarQube Server') {
+      bat "${sqScannerMsBuildHome}\\SonarQube.Scanner.MSBuild.exe begin /k:myKey"
+
+    }
+                }
                 
             }
         }
