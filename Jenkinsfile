@@ -9,7 +9,7 @@ pipeline {
     
       environment {
         Nuget_Proxy = "https://api.nuget.org/v3/index.json"
-        SonarQube_Project_Key = "Dot.net Sample code"
+        SonarQube_Project_Key = "NAGP.Net.Project"
       
     }
     
