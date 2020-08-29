@@ -3,9 +3,6 @@ def sqScannerMsBuildHome = "/home/jenkins/sonar-scanner-msbuild-4.8.0.12008"
 pipeline {
     agent any 
     
-    tools { 
-        jdk 'jdk8' 
-    }
     options {
         disableConcurrentBuilds()
     }
