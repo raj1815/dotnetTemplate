@@ -1,27 +1,37 @@
 
+def sqScannerMsBuildHome = "/home/jenkins/sonar-scanner-msbuild-4.8.0.12008"
 pipeline {
     agent any 
     
+    tools { 
+        jdk 'jdk8' 
+    }
     options {
         disableConcurrentBuilds()
     }
     
       environment {
         Nuget_Proxy = "https://api.nuget.org/v3/index.json"
+        SonarQube_Project_Key = "Dot.net Sample code"
+      
     }
     
     stages {        
         stage('nudget restore') {
             steps {    
                 bat "dotnet restore -s ${Nuget_Proxy}"
-                bat "dotnet build"  
             }
         }
         
         
-        stage('sonar start ') {
-            steps {    
-               bat "SonarScanner.MSBuild.exe begin /k:"sample-key" " 
+        stage("SonarQube Initialise") {
+            steps {
+                script {
+                    withSonarQubeEnv('SonarQube') {
+                        bat "dotnet sonarscanner begin /k:'${env.SonarQube_Project_Key}' \
+                   
+                    }  
+                }
             }
         }
         
