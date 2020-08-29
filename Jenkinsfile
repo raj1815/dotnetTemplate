@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv('SonarQube') {
-                        bat "dotnet sonarscanner begin /k:'${env.SonarQube_Project_Key}' \
+                        bat "dotnet sonarscanner begin /k:'${env.SonarQube_Project_Key}'
                    
                     }  
                 }
