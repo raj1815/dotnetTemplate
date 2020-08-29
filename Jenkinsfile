@@ -22,12 +22,10 @@ pipeline {
         
         stage("SonarQube Initialise") {
             steps {
-                script{
                     withSonarQubeEnv('My SonarQube Server') {
       bat "${sqScannerMsBuildHome}\\SonarQube.Scanner.MSBuild.exe begin /k:myKey"
 
     }
-                }
                 
             }
         }
