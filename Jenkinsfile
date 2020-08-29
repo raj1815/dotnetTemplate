@@ -19,6 +19,13 @@ pipeline {
         }
         
         
+        stage('sonar start ') {
+            steps {    
+                bat "SonarScanner.MSBuild.exe begin /k:"sample-key" "
+                bat "dotnet build"  
+            }
+        }
+        
         stage('Unit Testing') {
             steps {
                  echo 'testing'     
