@@ -1,4 +1,4 @@
-
+"Dot.net Sample code"
 def sqScannerMsBuildHome = "/home/jenkins/sonar-scanner-msbuild-4.8.0.12008"
 pipeline {
     agent any 
@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv('SonarQube') {
-                        bat "dotnet sonarscanner begin /k:'${env.SonarQube_Project_Key}'
+                        bat "dotnet sonarscanner begin /k:'"Dot.net Sample code"'
                    
                     }  
                 }
