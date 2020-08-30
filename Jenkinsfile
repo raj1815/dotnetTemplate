@@ -33,7 +33,7 @@ pipeline {
    
         stage('Sonar analysis begin') {
                 steps {
-                    bat "${Scan_path} begin /k:'${env.SonarQube_Project_Key}' \
+                    bat "${Scan_path} begin /k: \"${env.SonarQube_Project_Key}\"" \
                             /v:'${env.SonarQube_Version}' \
                             /d:sonar.buildbreaker.skip=\"true\" \
                             /d:sonar.exclusions='${env.SonarQube_Project_Exclusions}'"
