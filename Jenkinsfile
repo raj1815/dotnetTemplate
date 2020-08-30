@@ -33,7 +33,7 @@ pipeline {
    
         stage('Sonar analysis begin') {
                 steps {
-                    bat "${Scan_path} begin /k: \"sqs:NAGP-Assignment\""  /v:'1.0.0'  /d:sonar.buildbreaker.skip=\"true\"  /d:sonar.exclusions='${env.SonarQube_Project_Exclusions}'"
+                    bat "${Scan_path} begin /k: \"sqs:NAGP-Assignment\"  /v:\"1.0.0\" "
 
                  }
             }
