@@ -46,7 +46,8 @@ pipeline {
 
              stage('Sonar analysis end') {
             steps {
-                 bat "${Scan_path} end"  
+                echo "analysis end"
+               //  bat "${Scan_path} end"  
             }
         }
     }
