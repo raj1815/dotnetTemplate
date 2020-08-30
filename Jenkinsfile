@@ -1,44 +1,47 @@
-def sqScannerMsBuildHome = tool 'Scanner for MSBuild 4.6'
+  
 pipeline {
-    agent any 
-    
+    agent any
+   
     options {
         disableConcurrentBuilds()
     }
-    
+   
       environment {
         Nuget_Proxy = "https://api.nuget.org/v3/index.json"
-        SonarQube_Project_Key = "NAGP.Net.Project"
+        Scan_path = "C:/Users/raj1815/.dotnet/tools/dotnet-sonarscanner"
+    }
+   
+    stages {       
+        stage('nuget restore') {
+            steps {   
+                bat"dotnet clean"
+                bat "dotnet restore"
+             
+            }
+        }
+       
       
-    }
-    
-    stages {        
-        stage('nudget restore') {
-            steps {    
-                bat "dotnet restore -s ${Nuget_Proxy}"
-            }
-        }
-        
-        
-        stage("SonarQube Initialise") {
-            steps {
-                    withSonarQubeEnv('My SonarQube Server') {
-      bat "${sqScannerMsBuildHome}\\SonarQube.Scanner.MSBuild.exe begin /k:myKey"
-
-    }
-                
-            }
-        }
-        
         stage('Unit Testing') {
             steps {
-                 echo 'testing'     
+                 echo 'testing'    
             }
         }
-    
+   
+        stage('Sonar analysis begin') {
+                steps {
+                   bat "${Scan_path} begin  /k:\"sqs:NAGP-Assignment\""
+                }
+            }
           stage('code build') {
-            steps {    
-                bat "dotnet build"  
+            steps {   
+                bat "dotnet build"
+            }
+        }
+
+
+             stage('Sonar analysis end') {
+            steps {
+                 bat "${Scan_path} end"  
             }
         }
     }
