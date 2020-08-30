@@ -61,7 +61,8 @@ pipeline
                 }
             }
             steps {
-                bat 'RUN dotnet restore'
+                 echo "analysis end"
+               // bat 'RUN dotnet restore'
             }
         }
     }
