@@ -33,7 +33,7 @@ pipeline {
    
         stage('Sonar analysis begin') {
                 steps {
-                    bat "${Scan_path} begin /k:\"sqs:NAGP-Assignment\"  /v:\"1.0.0\" "
+                    bat "${Scan_path} begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
 
                  }
             }
