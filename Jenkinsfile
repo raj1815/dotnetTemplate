@@ -9,8 +9,8 @@ pipeline {
       environment {
         Nuget_Proxy = "https://api.nuget.org/v3/index.json"
         Scan_path = "C:/Users/raj1815/.dotnet/tools/dotnet-sonarscanner"
-        SonarQube_Project_Key = "NAGP-Assignment-Net"
-        SonarQube_Project_Name = "NAGP-Assignment-Net"
+        SonarQube_Project_Key = "sqs:NAGP-Assignment"
+        SonarQube_Project_Name = "sqs:NAGP-Assignment"
         SonarQube_Project_Exclusions = "**/*.json"
         SonarQube_Version = "1.0.0"
     }
