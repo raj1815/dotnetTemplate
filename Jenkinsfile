@@ -21,8 +21,6 @@ pipeline {
     
     options {
         disableConcurrentBuilds()
-        // Discard old build logs
-        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
     }
     
     environment {
@@ -103,36 +101,5 @@ pipeline {
             }
         }
 
-        stage ('UCD Publish') {
-            when {
-                anyOf {
-                    branch "master"
-                    branch "feature/*"
-                }
-            }
-            steps {
-                script {
-                    sh "echo starting - ${env.WORKSPACE}"
-                    env.BRANCH_WORKSPACE = env.WORKSPACE
-
-                    step([$class: 'UCDeployPublisher',
-                    siteName: 'UCD PROD',
-                    component: [
-                        $class: 'com.urbancode.jenkins.plugins.ucdeploy.VersionHelper$VersionBlock',
-                        componentName: "${env.UCD_Component_Name}",
-                        delivery: [
-                            $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeliveryHelper$Push',
-                            pushVersion: "${BRANCH_NAME}-${BUILD_NUMBER}",
-                            baseDir: "${env.BRANCH_WORKSPACE}/${env.Publish_Path}",
-                            fileIncludePatterns: '**/*',
-                            fileExcludePatterns: '',
-                            pushProperties: 'jenkins.server=Local\njenkins.reviewed=false',
-                            pushDescription: 'Pushed from Jenkins'
-                        ]
-                        ]
-                    ])
-                }
-            }
-		}
     }
 }
