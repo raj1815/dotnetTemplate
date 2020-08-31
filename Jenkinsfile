@@ -42,12 +42,11 @@ pipeline
         }
         stage('code build') {
             steps {
-                bat "dotnet publish -c release -o /app --no-restore"
+                bat "dotnet publish -c release -o app --no-restore"
             }
         }
 
       stage('Docker Build') {
-      agent any
       steps {
         bat 'docker build -t nagp-net-assignment:latest .'
       }
