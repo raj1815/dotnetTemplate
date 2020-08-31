@@ -1,105 +1,65 @@
-// -----------------------------------------------------------------------------------------
-//
-// Global variables
-//
-def timestamp = new Date().format("yyyy-MM-dd-HH-mm")
-def sqScannerMsBuildHome = "/home/jenkins/sonar-scanner-msbuild-4.8.0.12008"
 
-// -----------------------------------------------------------------------------------------
-//
-// The main pipeline section
-//
+pipeline
+{
+    agent any
 
-def getVersion = {
-    def contents = readFile('*.csproj')
-    matcher = contents =~ '<AssemblyVersion>(.+)</AssemblyVersion>'
-    version = matcher[0][1]
-}
 
-pipeline {
-    agent any 
-    
     options {
         disableConcurrentBuilds()
     }
-    
+
     environment {
         Nuget_Proxy = "https://api.nuget.org/v3/index.json"
-        SonarQube_Project_Key = "Lending.Repayment.Strategy.System.API"
-        SonarQube_Project_Name = "Lending.Repayment.Strategy.System.API"
+        Scan_path = "C:/Users/raj1815/.dotnet/tools/dotnet-sonarscanner"
+        SonarQube_Project_Key = "sqs:NAGP-Assignment"
+        SonarQube_Project_Name = "sqs:NAGP-Assignment"
         SonarQube_Project_Exclusions = "**/*.json"
         SonarQube_Version = "1.0.0"
-        Test_Project = ""
-        Test_Output = ""
-        Project_Solution = "WebApplication4.sln"
-        Project_Folder = "WebApplication4"
-        Publish_Path = "WebApplication4/out"
-        UCD_Component_Name = "Lending.Repayment.Strategy.System.API"
     }
-    
-    stages {
-        stage("SonarQube Initialise") {
-            steps {
-                script {
-                    withSonarQubeEnv('SonarQube') {
-                        // Initialise the MS Build step with the SonarQube hooks to collect information for upload and analysis later. 
-                        // Replace /k:<key> with registered key from https://sonarqube.nednet.co.za
-                        sh "dotnet ${sqScannerMsBuildHome}/SonarScanner.MSBuild.dll begin /k:'${env.SonarQube_Project_Key}' \
-                            /d:sonar.host.url='${SONAR_HOST_URL}' \
-                            /d:sonar.login='${SONAR_AUTH_TOKEN}' \
-                            /v:'${env.SonarQube_Version}' \
-                            /d:sonar.branch.name='${BRANCH_NAME}' \
-                            /d:sonar.buildbreaker.skip=\"true\" \
-                            /d:sonar.exclusions='${env.SonarQube_Project_Exclusions}'"
 
-                            //d:sonar.cs.opencover.reportsPaths='${WORKSPACE}/${env.Test_Output}/coverage.xml' \
-                            //d:sonar.cs.vstest.reportsPaths='${WORKSPACE}/${env.Test_Output}/TestResults.trx'"
-                    }  
-                }
+    stages {
+        stage('nuget restore') {
+            steps {
+                bat"dotnet clean"
+                bat "dotnet restore"
+
+
             }
         }
-        
-        stage('DotNet Build') {
-            steps {                
-                sh "dotnet restore -s ${Nuget_Proxy}"
-                sh "dotnet build"                
-            }
-        }
+
 
         stage('Unit Testing') {
             steps {
-                script {
-                    try {
-                        echo "=====> Running unit tests"
-                        // Run all the unit tests for this project, outputting the results to a MS Test (.trx) file
-                        //sh "dotnet test --logger 'trx;LogFileName=TestResults.trx' --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=\"${WORKSPACE}/${env.Test_Output}/coverage.xml\" \"${env.Test_Project}\""                    
-                    } catch (err) {
-                        echo err.getMessage()
-                        echo "Error detected, but we will continue."
-                    }
-                }
+                echo 'testing'
             }
         }
 
-        stage ('SonarQube End') {
+        stage('Sonar analysis begin') {
             steps {
-                script {
-                    withSonarQubeEnv('SonarQube') {
-                        // Complete the build process and upload the results to the SonarQube server for processing
-                        sh "dotnet ${sqScannerMsBuildHome}/SonarScanner.MSBuild.dll end /d:sonar.login=${SONAR_AUTH_TOKEN}"
-                    }
-                }
-            }
-        }      
-        
-        stage('DotNet Publish') {
+                bat "${Scan_path} begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
+
+                 }
+        }
+        stage('code build') {
             steps {
-                dir("${env.Project_Folder}") {
-                    sh "rm -rf out"
-                    sh "dotnet publish -c Release -o out"                   
-                }
+                bat "dotnet publish -c release -o app --no-restore"
             }
         }
+
+      stage('Docker Build') {
+      agent any
+      steps {
+        bat 'docker build -t nagp-net-assignment:latest .'
+      }
+        }
+
+        stage('Sonar analysis end') {
+            steps {
+                echo "analysis end"
+               //  bat "${Scan_path} end"  
+            }
+        }
+
 
     }
 }
