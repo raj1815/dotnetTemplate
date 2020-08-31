@@ -42,7 +42,7 @@ pipeline
         }
         stage('code build') {
             steps {
-                bat "dotnet publish -c release -o /app --no-restore"
+                bat "dotnet publish -c release -o app --no-restore"
             }
         }
 
