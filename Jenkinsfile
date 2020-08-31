@@ -54,16 +54,6 @@ pipeline
             }
         }
 
-        stage('Docker') {
-            agent {
-                docker {
-                    image 'mcr.microsoft.com/dotnet/core/sdk:3.1'
-                }
-            }
-            steps {
-                 echo "analysis end"
-               // bat 'RUN dotnet restore'
-            }
-        }
+
     }
 }
