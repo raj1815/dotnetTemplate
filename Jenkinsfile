@@ -46,6 +46,12 @@ pipeline
             }
         }
 
+      stage('Docker Build') {
+      agent any
+      steps {
+        bat 'docker build -t nagp-net-assignment:latest .'
+      }
+        }
 
         stage('Sonar analysis end') {
             steps {
