@@ -76,7 +76,80 @@ pipeline
             }
         }
         
-        
+        [6:28 PM] Ajay Srivastava
+    
+
+pipeline {
+    agent any
+
+    options {
+        disableConcurrentBuilds()
+    }
+
+      environment {
+Nuget_Proxy = "https://api.nuget.org/v3/index.json"
+Scan_path = "C:/Users/ajaysrivastava/.dotnet/tools/dotnet-sonarscanner"
+    }
+
+    stages {       
+        stage('nuget restore') {
+            steps {   
+                bat"dotnet clean"
+                bat "dotnet restore"
+
+            }
+        }
+
+
+          stage('code build') {
+            steps {   
+                bat " dotnet build -c Release"
+            }
+        }
+          stage('docker image build') {
+            steps { 
+                bat " docker build -t i_ajaysrivastava_master ."
+            }
+
+        }
+    stage('docker config') {
+        parallel {
+          stage('docker container precheck') {
+              agent any
+              steps {
+                  script{
+                containerID = powershell(returnStdout: true, script:'docker ps --filter name=c_ajaysrivastava_master --format "{{.ID}}"')
+if(containerID)
+                    {
+                        bat "docker stop ${containerID}"
+                        bat "docker rm -f ${containerID}"
+                     }
+                  }
+              }
+          }
+
+            stage('push docker image to dtr') {
+                agent any
+                steps {   
+                            bat "docker tag i_ajaysrivastava_master dtr.nagarro.com:443/i_ajaysrivastava_master"
+                            bat "docker push dtr.nagarro.com:443/i_ajaysrivastava_master"
+                        }
+            }
+        }
+    }
+ 
+            stage('docker image run') {
+                steps {   
+                            bat "docker run -d -p 8081:80 --name c_rajkumar_master nagp-net-assignment"
+                        }
+            }
+ 
+
+ 
+    }
+}
+
+
         
         
     }
