@@ -30,7 +30,9 @@ pipeline
 
         stage('Sonar analysis begin') {
             steps {
-                bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
+                withSonarQubeEnv('Test_Sonar') {
+                        bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
+                }
                  }
         }
         
@@ -43,7 +45,9 @@ pipeline
 
        stage('Sonar analysis end') {
             steps {
+                 withSonarQubeEnv('Test_Sonar') {
                  bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll end"  
+                 }
             }
         }
         
