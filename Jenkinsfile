@@ -53,27 +53,7 @@ pipeline
       }
         }
 
-    stage('docker config') {
-          stage('docker container precheck') {
-              steps {
-                  script{
-                containerID = powershell(returnStdout: true, script:'docker ps --filter name=c_rajkumar_master --format "{{.ID}}"')
-                  if(containerID)
-                    {
-                        bat "docker stop ${containerID}"
-                        bat "docker rm -f ${containerID}"
-                     }
-                  }
-              }
-          }
-          
-            stage('push docker image to dtr') {
-                steps {   
-                            bat "echo bingo"
-                        }
-            }
-      
-    }
+
         
         
     }
