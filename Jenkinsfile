@@ -56,7 +56,7 @@ pipeline
 
             stage('Run Tests') {
             parallel {
-                stage('Test On Windows') {
+                stage('Pre container check') {
                     steps {
                            script{
                 containerID = powershell(returnStdout: true, script:'docker ps --filter name=c_rajkumar_master --format "{{.ID}}"')
@@ -68,7 +68,7 @@ pipeline
                   }
                     }
                 }
-                stage('Test On Linux') {
+                stage('Push to Dtr') {
                     steps {
                         echo "echo Test On Linux"
                     }
