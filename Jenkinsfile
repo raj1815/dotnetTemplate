@@ -54,6 +54,22 @@ pipeline
         }
 
 
+            stage('Run Tests') {
+            parallel {
+                stage('Test On Windows') {
+                    steps {
+                        echo "echo Test On Windows"
+                    }
+                }
+                stage('Test On Linux') {
+                    steps {
+                        echo "echo Test On Linux"
+                    }
+                }
+            }
+        }
+        
+        
         
         
     }
