@@ -15,6 +15,7 @@ pipeline
         SonarQube_Project_Name = "sqs:NAGP-Assignment"
         SonarQube_Project_Exclusions = "**/*.json"
         SonarQube_Version = "1.0.0"
+        scannerHome = tool name: 'sonar_scanner_dotnet',type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
     }
 
     stages {
@@ -29,7 +30,7 @@ pipeline
 
         stage('Sonar analysis begin') {
             steps {
-                bat "${Scan_path} begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
+                bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
                  }
         }
         
