@@ -58,7 +58,14 @@ pipeline
             parallel {
                 stage('Test On Windows') {
                     steps {
-                        echo "echo Test On Windows"
+                           script{
+                containerID = powershell(returnStdout: true, script:'docker ps --filter name=c_rajkumar_master --format "{{.ID}}"')
+                  if(containerID)
+                    {
+                        bat "docker stop ${containerID}"
+                        bat "docker rm -f ${containerID}"
+                     }
+                  }
                     }
                 }
                 stage('Test On Linux') {
