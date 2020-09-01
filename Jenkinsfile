@@ -43,8 +43,7 @@ pipeline
 
        stage('Sonar analysis end') {
             steps {
-                echo "analysis end"
-               //  bat "${Scan_path} end"  
+                 bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll end"  
             }
         }
         
