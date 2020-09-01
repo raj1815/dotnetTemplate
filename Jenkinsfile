@@ -27,36 +27,30 @@ pipeline
             }
         }
 
-
-        stage('Unit Testing') {
-            steps {
-                echo 'testing'
-            }
-        }
-
         stage('Sonar analysis begin') {
             steps {
                 bat "${Scan_path} begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
-
                  }
         }
+        
+        
         stage('code build') {
             steps {
                 bat "dotnet publish -c release -o app --no-restore"
             }
         }
 
-      stage('Docker Build') {
-      steps {
-        bat 'docker build -t nagp-net-assignment:latest .'
-      }
-        }
-
-        stage('Sonar analysis end') {
+       stage('Sonar analysis end') {
             steps {
                 echo "analysis end"
                //  bat "${Scan_path} end"  
             }
+        }
+        
+      stage('Docker Build') {
+      steps {
+        bat 'docker build -t nagp-net-assignment:latest .'
+      }
         }
 
 
