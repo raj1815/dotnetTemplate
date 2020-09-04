@@ -49,7 +49,7 @@ pipeline
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t  i_raj1815_master:latest .'
+                bat 'docker build -t  i_raj1815_master:${BUILD_NUMBER} .'
             }
             
         }
@@ -77,7 +77,7 @@ pipeline
 
         stage('docker image run') {
                 steps {
-                bat 'docker run -d -p 8081:80 --name c_raj1815_master i_raj1815_master'
+                bat 'docker run -d -p 8081:80 --name c_raj1815_master i_raj1815_master:${BUILD_NUMBER}'
                 }
         }
     }
