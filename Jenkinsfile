@@ -75,9 +75,16 @@ pipeline
             }
             }
 
-        stage('docker image run') {
+        stage('Docker deployment') {
                 steps {
                 bat 'docker run -d -p 8081:80 --name c_raj1815_master i_raj1815_master:${BUILD_NUMBER}'
+                }
+        }
+
+        
+        stage('helm chart deployment') {
+                steps {
+                bat 'kubectl version'
                 }
         }
     }
