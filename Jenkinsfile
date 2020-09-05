@@ -88,6 +88,7 @@ pipeline
    
         stage('deploy to kubernetes cluster') {
 
+ steps {
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: '948aae04-a88d-4482-8b25-f24744220626', namespace: '', serverUrl: 'https://kubernetes.docker.internal:6443') {
 
 
@@ -95,7 +96,7 @@ pipeline
                    //  bat "helm version"
                         
                     }
-                           
+ }                   
                 
             }
 
