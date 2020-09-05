@@ -92,7 +92,7 @@ pipeline
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: '948aae04-a88d-4482-8b25-f24744220626', namespace: '', serverUrl: 'https://kubernetes.docker.internal:6443') {
 
 
-                      bat 'kubectl version'
+                      bat 'kubectl create ns raj'
                    //  bat "helm version"
                         
                     }
