@@ -72,7 +72,7 @@ pipeline
                 }
                 stage('Push to Dtr') {
                     steps {
-                        echo 'echo Test On Linux'
+                        bat "docker push i_raj1815_master:${BUILD_NUMBER}"
                     }
                 }
             }
