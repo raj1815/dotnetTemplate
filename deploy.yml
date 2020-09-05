@@ -1,0 +1,23 @@
+# Simple deployment used to deploy and manage the app in nigelpoulton/getting-started-k8s:1.0
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deploy
+  labels:
+    app: web
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: nagp
+  template:
+    metadata:
+      labels:
+        app: nagp
+    spec: 
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: nagp-ctr
+        image: rajk078/nagp-net-assignment
+        ports:
+        - containerPort: 80
