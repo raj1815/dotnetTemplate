@@ -72,7 +72,8 @@ pipeline
                 }
                 stage('Push to Dtr') {
                     steps {
-                        bat "docker push i_raj1815_master:${BUILD_NUMBER}"
+                        bat "docker tag i_raj1815_master rajk078/i_raj1815_master:${BUILD_NUMBER}"
+                        bat "docker push rajk078/i_raj1815_master:${BUILD_NUMBER}"
                     }
                 }
             }
