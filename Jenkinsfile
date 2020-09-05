@@ -88,7 +88,8 @@ pipeline
    
         stage('deploy to kubernetes cluster') {
 
- steps {
+                steps {
+                    bat 'kubectl get pods'
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: '5ec3ed52-8513-4070-af4b-d2b63263e783', namespace: '', serverUrl: 'https://kubernetes.docker.internal:6443') {
 
 
