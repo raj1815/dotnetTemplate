@@ -107,7 +107,7 @@ stage('deploy to kubernetes cluster') {
 
         stage('helm chart deployment') {
                 steps {
-                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: '948aae04-a88d-4482-8b25-f24744220626', namespace: '', serverUrl: 'https://kubernetes.docker.internal:6443') {
+                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: '', namespace: '', serverUrl: 'https://kubernetes.docker.internal:6443') {
             // some block
                   bat 'kubectl apply  -f deploy.yml'
             }
