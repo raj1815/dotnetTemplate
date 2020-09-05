@@ -90,7 +90,7 @@ pipeline
 
                 steps {
 
-withKubeConfig(caCertificate: '', clusterName: 'docker-desktop', contextName: 'docker-desktop', credentialsId: '5ec3ed52-8513-4070-af4b-d2b63263e783', namespace: '', serverUrl: 'https://kubernetes.docker.internal:6443') {
+withKubeConfig(caCertificate: '', clusterName: 'docker-desktop', contextName: 'docker-desktop', credentialsId: '5ec3ed52-8513-4070-af4b-d2b63263e783', namespace: '', serverUrl: 'https://kubernetes.docker233.internal:6443') {
 
  bat 'kubectl get pods'
 }
