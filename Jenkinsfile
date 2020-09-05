@@ -27,9 +27,10 @@ pipeline
 
         stage('Start sonarcube analysis') {
             steps {
-                withSonarQubeEnv('Test_Sonar') {
-                        bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
-                }
+                 echo 'Start sonarcube analysis'
+                // withSonarQubeEnv('Test_Sonar') {
+                //         bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
+                // }
             }
         }
 
@@ -41,15 +42,17 @@ pipeline
 
         stage('Stop sonarcube analysis') {
             steps {
-                withSonarQubeEnv('Test_Sonar') {
-                    bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll end"
-                }
+                echo 'Start sonarcube analysis'
+                // withSonarQubeEnv('Test_Sonar') {
+                //     bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll end"
+                // }
             }
         }
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t  i_raj1815_master .'
+                bat "docker build -t  i_raj1815_master:${BUILD_NUMBER} ."
+        
             }
             
         }
@@ -77,7 +80,7 @@ pipeline
 
         stage('Docker deployment') {
                 steps {
-                bat 'docker run -d -p 8081:80 --name c_raj1815_master i_raj1815_master'
+                bat "docker run -d -p 8081:80 --name c_raj1815_master i_raj1815_master:${BUILD_NUMBER}"
                 }
         }
 
