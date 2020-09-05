@@ -62,7 +62,7 @@ pipeline
                 stage('Pre container check') {
                     steps {
                         script {
-                            containerID = powershell(returnStdout: true, script:'docker ps --filter name=c_rajkumar_master --format "{{.ID}}"')
+                            containerID = powershell(returnStdout: true, script:'docker ps --filter name=c_1815_master --format "{{.ID}}"')
                             if (containerID) {
                                 bat "docker stop ${containerID}"
                                 bat "docker rm -f ${containerID}"
