@@ -62,7 +62,7 @@ pipeline
                 stage('Pre container check') {
                     steps {
                         script {
-                            containerID = powershell(returnStdout: true, script:'docker ps --filter name=c_1815_master --format "{{.ID}}"')
+                            containerID = powershell(returnStdout: true, script:'docker ps --filter name=c_raj1815_master --format "{{.ID}}"')
                             if (containerID) {
                                 bat "docker stop ${containerID}"
                                 bat "docker rm -f ${containerID}"
@@ -86,7 +86,7 @@ pipeline
         }
 
    
-stage('deploy to kubernetes cluster') {
+        stage('deploy to kubernetes cluster') {
                
                 steps {   
                     withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kube', namespace: '', serverUrl: 'https://kubernetes.docker.internal:6443') {
