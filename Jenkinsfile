@@ -90,31 +90,12 @@ pipeline
 
                 steps {
 
-kubeconfig(caCertificate: '''apiVersion: v1
-clusters:
-- cluster:
-    certificate-authority-data: DATA+OMITTED
-    server: https://kubernetes.docker.internal:6443
-  name: docker-desktop
-contexts:
-- context:
-    cluster: docker-desktop
-    user: docker-desktop
-  name: docker-desktop
-- context:
-    cluster: docker-desktop
-    user: docker-desktop
-  name: docker-for-desktop
-current-context: docker-desktop
-kind: Config
-preferences: {}
-users:
-- name: docker-desktop
-  user:
-    client-certificate-data: REDACTED
-    client-key-data: REDACTED''', credentialsId: '5ec3ed52-8513-4070-af4b-d2b63263e783', serverUrl: 'https://kubernetes.docker.internal:6443') {
-   bat 'kubectl get pods'
+withKubeConfig(caCertificate: '', clusterName: 'docker-desktop', contextName: 'docker-desktop', credentialsId: '5ec3ed52-8513-4070-af4b-d2b63263e783', namespace: '', serverUrl: 'https://kubernetes.docker.internal:6443') {
+
+ bat 'kubectl get pods'
 }
+
+
 
 
  }                   
