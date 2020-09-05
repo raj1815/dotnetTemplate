@@ -90,7 +90,7 @@ pipeline
 
                 steps {
 
-withKubeConfig(caCertificate: '''apiVersion: v1
+kubeconfig(caCertificate: '''apiVersion: v1
 clusters:
 - cluster:
     certificate-authority-data: DATA+OMITTED
@@ -112,8 +112,8 @@ users:
 - name: docker-desktop
   user:
     client-certificate-data: REDACTED
-    client-key-data: REDACTED''', clusterName: 'docker-desktop', contextName: 'docker-desktop', credentialsId: '5ec3ed52-8513-4070-af4b-d2b63263e783', namespace: '', serverUrl: 'https://kubernetes.docker.internal:6443') {
-      bat 'kubectl get pods'
+    client-key-data: REDACTED''', credentialsId: '5ec3ed52-8513-4070-af4b-d2b63263e783', serverUrl: 'https://kubernetes.docker.internal:6443') {
+   bat 'kubectl get pods'
 }
 
 
