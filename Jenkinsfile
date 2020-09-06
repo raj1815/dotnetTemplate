@@ -90,7 +90,7 @@ pipeline
 
                 steps {
 
- bat 'kubectl get pods'
+ bat 'kubectl create ns raj'
 
  }                   
                 
