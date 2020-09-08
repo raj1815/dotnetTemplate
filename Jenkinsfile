@@ -29,7 +29,7 @@ pipeline
             steps {
                  echo 'Start sonarcube analysis'
                 withSonarQubeEnv('Test_Sonar') {
-                        bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
+                        bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll begin /k:${JOB_NAME}  /n:${environment.SonarQube_Project_Name} /v:${environment.SonarQube_Version} "
                 }
             }
         }
