@@ -28,9 +28,9 @@ pipeline
         stage('Start sonarcube analysis') {
             steps {
                  echo 'Start sonarcube analysis'
-                // withSonarQubeEnv('Test_Sonar') {
-                //         bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
-                // }
+                withSonarQubeEnv('Test_Sonar') {
+                        bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll begin /k:\"sqs:NAGP-Assignment\"  /n:\"sqs:NAGP-Assignment\" /v:\"1.0.0\"  "
+                }
             }
         }
 
@@ -43,9 +43,9 @@ pipeline
         stage('Stop sonarcube analysis') {
             steps {
                 echo 'Start sonarcube analysis'
-                // withSonarQubeEnv('Test_Sonar') {
-                //     bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll end"
-                // }
+                withSonarQubeEnv('Test_Sonar') {
+                    bat "dotnet ${scannerHome}/SonarScanner.MsBuild.dll end"
+                }
             }
         }
 
@@ -86,14 +86,18 @@ pipeline
         }
 
    
-        stage('deploy to kubernetes cluster') {
-
-                steps {
-
- bat 'kubectl create ns raj'
-
- }                   
-                
+            stage('Helm chart Deployment') {
+               
+                steps {   
+                    script {
+                        namespace = powershell(returnStdout: true, script:'kubectl get ns ns-raj1815-master  -o=custom-columns=NAME:.metadata.name --ignore-not-found')
+                        if(!namespace){
+                             bat "kubectl create ns ns-raj1815-master"
+                        }
+                    }
+                             bat "helm upgrade raj1815-master-chart ./helmchart --install -n ns-raj1815-master"
+                      }
+                    
             }
 
     }
